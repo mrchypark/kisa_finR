@@ -5,6 +5,7 @@ date: "2017년 7월 20일"
 output: 
   slidy_presentation:
     css: kisa.css
+    self_contained: TRUE
 ---
 
 ```{r setup, include=FALSE}
@@ -2086,7 +2087,7 @@ r$status_code
 
 You can automatically throw a warning or raise an error if a request did not succeed.
 
-```{r}
+```
 warn_for_status(r)
 stop_for_status(r)
 ```
@@ -2289,7 +2290,55 @@ Mac + R + rJava의 조합은 맥에서 가장 어려운 조합으로 보여진�
 
 `word2vec`은 딥러닝의 일종으로 한글은 [한글 word2vec 테스트](http://w.elnn.kr/search/)에서 확인해 볼 있습니다.
 
-![]("슬라이드1.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C1.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C2.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C3.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C4.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C5.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C6.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C7.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C8.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C9.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C10.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C11.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C12.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C13.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C14.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C15.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C16.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C17.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C18.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C19.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C20.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C21.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C22.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C23.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C24.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C25.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C26.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C27.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C28.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C29.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C30.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C31.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C32.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C33.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C34.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C35.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C36.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C37.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C38.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C39.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C40.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C41.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C42.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C43.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C44.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C45.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C46.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C47.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C48.PNG")
+![]("https://raw.githubusercontent.com/mrchypark/kisa_finR/master/random-160722004106/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C49.PNG")
 
 ## 알고리즘의 종류
 
@@ -2308,6 +2357,7 @@ if ( !file.exists(fn) ) {
 ```
 
 ```{r}
+
 library("fastText")
 
 train <- sample(sprintf("__label__%s", readLines("dbpedia_csv/train.csv")))
@@ -2322,24 +2372,18 @@ labels <- gsub("\\D", "", substr(test, 1, 4))
 test <- substr(test, 5, max(nchar(test)))
 head(test)
 head(labels)
-Train Model
+```
 
-After the data preparation the model can be trained and is saved to the file "dbpedia.bin".
-
+```{r}
 cntrl <- ft.control(word_vec_size = 10L, learning_rate = 0.1, max_len_ngram = 2L, 
                     min_count = 1L, nbuckets = 10000000L, epoch = 5L, nthreads = 20L)
 
 model <- fasttext(input = "dbpedia.train", method = "supervised", control = cntrl)
 save.fasttext(model, "dbpedia")
-Read Model
+```
 
-A previously trained model can be loaded via the function read.fasttext.
-
+```{r}
 model <- read.fasttext( "dbpedia.bin" )
-Predict / Test Model
-
-To perform prediction the function predict can be used.
-
 test.pred <- predict(model, test, k = 1L, prob = TRUE)
 str(test.pred)
 test.pred <- predict(model, test, k = 1L, prob = FALSE)
@@ -2349,10 +2393,10 @@ confusion_matrix <- table(labels, gsub("\\D", "", test.pred$label))
 confusion_matrix
 
 sum(diag(confusion_matrix)) / sum(confusion_matrix)
-Word Representation Learning
 
-Download Data
+```
 
+```{r}
 fn <- "enwik9.zip"
 if ( !file.exists(fn) ) {
     url <- "http://mattmahoney.net/dc/enwik9.zip"
@@ -2366,12 +2410,9 @@ if ( !file.exists(fn) ) {
     download.file(url, fn)
     unzip(fn)
 }
-Prepare Data
+```
 
-The function `clean_wiki` mimics the data preparation steps of the perl 
-script `wikifil.pl` 
-(`https://github.com/facebookresearch/fastText/blob/master/wikifil.pl`).
-
+```{r}
 clean_wiki <- function(x) {
     stopifnot(is.character(x))
     x <- gsub("[[:cntrl:]]", " ", x)
@@ -2413,6 +2454,9 @@ clean_wiki <- function(x) {
     x
 }
 
+```
+
+```{r}
 library(XML)
 html <- htmlParse("enwik9", encoding = "UTF-8")
 txt <- xpathSApply(html, "//text", xmlValue) 
@@ -2420,8 +2464,7 @@ txt <- grep("#redirect", txt, value = TRUE, ignore.case = TRUE, invert = TRUE)
 txt <- clean_wiki_pearl(txt)
 txt <- paste(txt, collapse = " ")
 txt <- gsub("\\s+", " ", txt)
-writeLines(txt, con = "fil9")
-Train Model
+writeLines(txt, con = "fil9"
 
 cntrl <- ft.control(learning_rate = 0.025, word_vec_size = 5, epoch = 1, 
                     nthreads = 10L)
@@ -2430,10 +2473,8 @@ model <- fasttext("fil9", "skipgram", cntrl)
 model
 
 save.fasttext(model, "fil9_skipgram_model")
-Load Model
 
 model <- read.fasttext("fil9_skipgram_model.bin")
-Obtain Word Vectors
 
 queries <- readLines("rw/rw.txt")
 queries <- unlist(lapply(strsplit(queries, "\\t"), head, 2))

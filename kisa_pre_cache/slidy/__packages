@@ -17,3 +17,6 @@ PerformanceAnalytics
 TTR
 quantmod
 tidyquant
+httr
+xml2
+rvest
