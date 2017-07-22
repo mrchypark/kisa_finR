@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = T, cache = T)
 
 # 강사 소개
 
-
+!()[]
 
 # 대부분의 에러 문제를 해결할 수 있는 기초 자료형에 대한 이해 {#data-type}
 
