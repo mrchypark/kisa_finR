@@ -3541,124 +3541,58 @@ cast &lt;-<span class="st"> </span><span class="kw">html_nodes</span>(html, <spa
 <p><code>word2vec</code>은 딥러닝의 일종으로 한글은 <a href="http://w.elnn.kr/search/">한글 word2vec 테스트</a>에서 확인해 볼 있습니다.</p>
 <p>word2vec의 필요성과 역사 등은 김홍배님의 훌륭한 <a href="https://www.slideshare.net/ssuser06e0c5/i-64267027">자료</a>가 있어서 확인해보시면 좋을 것 같습니다. 정상근 박사님의 <a href="http://mlcenter.postech.ac.kr/files/attach/lectures/SKT_%EC%A0%95%EC%83%81%EA%B7%BC_%EB%B0%95%EC%82%AC.pdf">자료</a>도 좋습니다.</p>
 <h2 id="-">알고리즘의 종류</h2>
-<p>빠른 성능으로 개선된 모델인 google의 <a href="https://github.com/mukul13/rword2vec">word2vec</a>을 시작으로 Stanford에발 발표한 <a href="https://cran.r-project.org/web/packages/text2vec/vignettes/glove.html">Glove</a>, facebook이 발표한 <a href="https://cran.r-project.org/web/packages/fastTextR/README.html">fastText</a> 등이 있습니다. 우리는 빠른 속도를 인정받고 있는 fastText를 함께 실행해 보겠습니다.</p>
-<p><a href="http://wiki.dbpedia.org/">dbpedia</a>의 문서를 학습용 데이터로 사용합니다.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fn &lt;-<span class="st"> &quot;dbpedia_csv.tar.gz&quot;</span>
-
-if ( !<span class="kw">file.exists</span>(fn) ) {
-    <span class="kw">download.file</span>(<span class="st">&quot;https://github.com/le-scientifique/torchDatasets/raw/master/dbpedia_csv.tar.gz&quot;</span>,
-                  fn)
-    <span class="kw">untar</span>(fn)
-}</code></pre></div>
-<pre><code>
-library(&quot;fastTextR&quot;)
-
-train &lt;- sample(sprintf(&quot;__label__%s&quot;, readLines(&quot;dbpedia_csv/train.csv&quot;, encoding = &quot;UTF-8&quot;)))
-head(train)
-
-train &lt;- normalize(train)
-writeLines(train, con = &quot;dbpedia.train&quot;)
-
-test &lt;- readLines(&quot;dbpedia_csv/test.csv&quot;, encoding = &quot;UTF-8&quot;)
-test &lt;- normalize(test)
-labels &lt;- gsub(&quot;\\D&quot;, &quot;&quot;, substr(test, 1, 4))
-test &lt;- substr(test, 5, max(nchar(test)))
-head(test)
-head(labels)</code></pre>
-<pre><code>cntrl &lt;- ft.control(word_vec_size = 10L, learning_rate = 0.1, max_len_ngram = 2L, 
-                    min_count = 1L, nbuckets = 10000000L, epoch = 5L, nthreads = 20L)
-
-model &lt;- fasttext(input = &quot;dbpedia.train&quot;, method = &quot;supervised&quot;, control = cntrl)
-save.fasttext(model, &quot;dbpedia&quot;)</code></pre>
-<pre><code>model &lt;- read.fasttext( &quot;dbpedia.bin&quot; )
-test.pred &lt;- predict(model, test, k = 1L, prob = TRUE)
-str(test.pred)
-test.pred &lt;- predict(model, test, k = 1L, prob = FALSE)
-str(test.pred)
-
-confusion_matrix &lt;- table(labels, gsub(&quot;\\D&quot;, &quot;&quot;, test.pred$label))
-confusion_matrix
-
-sum(diag(confusion_matrix)) / sum(confusion_matrix)
-</code></pre>
-<pre><code>fn &lt;- &quot;enwik9.zip&quot;
-if ( !file.exists(fn) ) {
-    url &lt;- &quot;http://mattmahoney.net/dc/enwik9.zip&quot;
-    download.file(url, fn)
-    unzip(fn)
+<p>빠른 성능으로 개선된 모델인 google의 <a href="https://github.com/mukul13/rword2vec">word2vec</a>을 시작으로 Stanford에발 발표한 <a href="https://cran.r-project.org/web/packages/text2vec/vignettes/glove.html">Glove</a>, facebook이 발표한 <a href="https://cran.r-project.org/web/packages/fastTextR/README.html">fastText</a> 등이 있습니다. 우리는 실습이 용이한 Glove를 사용해 보겠습니다.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(text2vec)</code></pre></div>
+<pre><code>## 
+## Attaching package: 'text2vec'</code></pre>
+<pre><code>## The following object is masked from 'package:dplyr':
+## 
+##     collect</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">text8_file =<span class="st"> &quot;./text8&quot;</span>
+if (!<span class="kw">file.exists</span>(text8_file)) {
+  <span class="kw">download.file</span>(<span class="st">&quot;http://mattmahoney.net/dc/text8.zip&quot;</span>, <span class="st">&quot;./text8.zip&quot;</span>)
+  <span class="kw">unzip</span> (<span class="st">&quot;./text8.zip&quot;</span>, <span class="dt">files =</span> <span class="st">&quot;text8&quot;</span>, <span class="dt">exdir =</span> <span class="st">&quot;./&quot;</span>)
 }
+wiki =<span class="st"> </span><span class="kw">readLines</span>(text8_file, <span class="dt">n =</span> <span class="dv">1</span>, <span class="dt">warn =</span> <span class="ot">FALSE</span>)
 
-fn &lt;- &quot;rw.zip&quot;
-if ( !file.exists(fn) ) {
-    url &lt;- &quot;http://stanford.edu/~lmthang/morphoNLM/rw.zip&quot;
-    download.file(url, fn)
-    unzip(fn)
-}</code></pre>
-<pre><code>clean_wiki &lt;- function(x) {
-    stopifnot(is.character(x))
-    x &lt;- gsub(&quot;[[:cntrl:]]&quot;, &quot; &quot;, x)
-    x &lt;- gsub(&quot;&lt;.*&gt;&quot;, &quot;&quot;, x, perl = TRUE)  ## remove xml tags
-    x &lt;- gsub(&quot;&amp;amp&quot;, &quot;&amp;&quot;, x, perl = TRUE) ## decode URL encoded chars
-    x &lt;- gsub(&quot;&amp;lt&quot;, &quot;&lt;&quot;, x, perl = TRUE)
-    x &lt;- gsub(&quot;&amp;gt&quot;, &quot;&gt;&quot;, x, perl = TRUE)
-    x &lt;- gsub(&quot;&lt;ref[^&lt;]*&lt;\\/ref&gt;&quot;, &quot;&quot;, x, perl = TRUE) ## remove references &lt;ref...&gt; ... &lt;/ref&gt;
-    x &lt;- gsub(&quot;&lt;[^&gt;]*&gt;&quot;, &quot;&quot;, x, perl = TRUE)           ## remove xhtml tags
-    x &lt;- gsub(&quot;\\[http:[^] ]*&quot;, &quot;[&quot;, x, perl = TRUE)   ## remove normal url, preserve visible text
-    x &lt;- gsub(&quot;\\|thumb&quot;, &quot;&quot;, x, perl = TRUE) ## remove images links, preserve caption
-    x &lt;- gsub(&quot;\\|left&quot;, &quot;&quot;, x, perl = TRUE)
-    x &lt;- gsub(&quot;\\|right&quot;, &quot;&quot;, x, perl = TRUE)
-    x &lt;- gsub(&quot;\\|\\d+px&quot;, &quot;&quot;, x, perl = TRUE)
-    x &lt;- gsub(&quot;\\[\\[image:[^\\[\\]]*\\|&quot;, &quot;&quot;, x, perl = TRUE)
-    x &lt;- gsub(&quot;\\[\\[category:([^|\\]]*)[^]]*\\]\\]&quot;, &quot;[[\\1]]&quot;, x, perl = TRUE) ## show categories without markup
-    x &lt;- gsub(&quot;\\[\\[[a-z\\-]*:[^\\]]*\\]\\]&quot;, &quot;&quot;, x, perl = TRUE) ## remove links to other languages
-    x &lt;- gsub(&quot;\\[\\[[^\\|\\]]*\\|&quot;, &quot;[[&quot;, x, perl = TRUE) ## remove wiki url, preserve visible text
-    x &lt;- gsub(&quot;\\{\\{[^\\}]*\\}\\}&quot;, &quot;&quot;, x, perl = TRUE) ## remove {{icons}} and {tables}
-    x &lt;- gsub(&quot;\\{[^\\}]*\\}&quot;, &quot;&quot;, x, perl = TRUE)
-    x &lt;- gsub(&quot;\\[&quot;, &quot;&quot;, x, perl = TRUE) ## remove [ and ]
-    x &lt;- gsub(&quot;\\]&quot;, &quot;&quot;, x, perl = TRUE)
-    x &lt;- gsub(&quot;&amp;[^;]*;&quot;, &quot; &quot;, x, perl = TRUE) ## remove URL encoded chars
+tokens &lt;-<span class="st"> </span><span class="kw">space_tokenizer</span>(wiki)
 
-    # convert to lowercase letters and spaces, spell digits
-    x &lt;- tolower(x)
-    x &lt;- gsub(&quot;0&quot;, &quot; zero &quot;, x, perl = TRUE)
-    x &lt;- gsub(&quot;1&quot;, &quot; one &quot;, x, perl = TRUE)
-    x &lt;- gsub(&quot;2&quot;, &quot; two &quot;, x, perl = TRUE)
-    x &lt;- gsub(&quot;3&quot;, &quot; three &quot;, x, perl = TRUE)
-    x &lt;- gsub(&quot;4&quot;, &quot; four &quot;, x, perl = TRUE)
-    x &lt;- gsub(&quot;5&quot;, &quot; five &quot;, x, perl = TRUE)
-    x &lt;- gsub(&quot;6&quot;, &quot; six &quot;, x, perl = TRUE)
-    x &lt;- gsub(&quot;7&quot;, &quot; seven &quot;, x, perl = TRUE)
-    x &lt;- gsub(&quot;8&quot;, &quot; eight &quot;, x, perl = TRUE)
-    x &lt;- gsub(&quot;9&quot;, &quot; nine &quot;, x, perl = TRUE)
+it =<span class="st"> </span><span class="kw">itoken</span>(tokens, <span class="dt">progressbar =</span> <span class="ot">FALSE</span>)
+vocab &lt;-<span class="st"> </span><span class="kw">create_vocabulary</span>(it)
+vocab &lt;-<span class="st"> </span><span class="kw">prune_vocabulary</span>(vocab, <span class="dt">term_count_min =</span> 5L)
 
-    x &lt;- gsub(&quot;[[:punct:]]&quot;, &quot; &quot;, x)
-    x
-}
-</code></pre>
-<pre><code>library(XML)
-html &lt;- htmlParse(&quot;enwik9&quot;, encoding = &quot;UTF-8&quot;)
-txt &lt;- xpathSApply(html, &quot;//text&quot;, xmlValue) 
-txt &lt;- grep(&quot;#redirect&quot;, txt, value = TRUE, ignore.case = TRUE, invert = TRUE)
-txt &lt;- clean_wiki_pearl(txt)
-txt &lt;- paste(txt, collapse = &quot; &quot;)
-txt &lt;- gsub(&quot;\\s+&quot;, &quot; &quot;, txt)
-writeLines(txt, con = &quot;fil9&quot;
+vectorizer &lt;-<span class="st"> </span><span class="kw">vocab_vectorizer</span>(vocab)
 
-cntrl &lt;- ft.control(learning_rate = 0.025, word_vec_size = 5, epoch = 1, 
-                    nthreads = 10L)
-
-model &lt;- fasttext(&quot;fil9&quot;, &quot;skipgram&quot;, cntrl)
-model
-
-save.fasttext(model, &quot;fil9_skipgram_model&quot;)
-
-model &lt;- read.fasttext(&quot;fil9_skipgram_model.bin&quot;)
-
-queries &lt;- readLines(&quot;rw/rw.txt&quot;)
-queries &lt;- unlist(lapply(strsplit(queries, &quot;\\t&quot;), head, 2))
-queries &lt;- tolower(queries)
-
-word_vectors &lt;- get_words(model, queries)</code></pre>
+tcm &lt;-<span class="st"> </span><span class="kw">create_tcm</span>(it, vectorizer)
+glove =<span class="st"> </span>GlobalVectors$<span class="kw">new</span>(<span class="dt">word_vectors_size =</span> <span class="dv">50</span>, <span class="dt">vocabulary =</span> vocab, <span class="dt">x_max =</span> <span class="dv">10</span>)
+word_vectors &lt;-<span class="st"> </span>glove$<span class="kw">fit_transform</span>(tcm, <span class="dt">n_iter =</span> <span class="dv">20</span>)</code></pre></div>
+<pre><code>## INFO [2017-07-25 03:47:54] 2017-07-25 03:47:54 - epoch 1, expected cost 0.0877
+## INFO [2017-07-25 03:48:21] 2017-07-25 03:48:21 - epoch 2, expected cost 0.0612
+## INFO [2017-07-25 03:48:46] 2017-07-25 03:48:46 - epoch 3, expected cost 0.0541
+## INFO [2017-07-25 03:49:11] 2017-07-25 03:49:11 - epoch 4, expected cost 0.0502
+## INFO [2017-07-25 03:49:34] 2017-07-25 03:49:34 - epoch 5, expected cost 0.0476
+## INFO [2017-07-25 03:50:04] 2017-07-25 03:50:04 - epoch 6, expected cost 0.0458
+## INFO [2017-07-25 03:50:29] 2017-07-25 03:50:29 - epoch 7, expected cost 0.0444
+## INFO [2017-07-25 03:50:54] 2017-07-25 03:50:54 - epoch 8, expected cost 0.0433
+## INFO [2017-07-25 03:51:21] 2017-07-25 03:51:21 - epoch 9, expected cost 0.0425
+## INFO [2017-07-25 03:51:46] 2017-07-25 03:51:46 - epoch 10, expected cost 0.0418
+## INFO [2017-07-25 03:52:13] 2017-07-25 03:52:13 - epoch 11, expected cost 0.0411
+## INFO [2017-07-25 03:52:37] 2017-07-25 03:52:37 - epoch 12, expected cost 0.0406
+## INFO [2017-07-25 03:52:58] 2017-07-25 03:52:58 - epoch 13, expected cost 0.0402
+## INFO [2017-07-25 03:53:25] 2017-07-25 03:53:25 - epoch 14, expected cost 0.0398
+## INFO [2017-07-25 03:53:47] 2017-07-25 03:53:47 - epoch 15, expected cost 0.0394
+## INFO [2017-07-25 03:54:14] 2017-07-25 03:54:14 - epoch 16, expected cost 0.0391
+## INFO [2017-07-25 03:54:39] 2017-07-25 03:54:39 - epoch 17, expected cost 0.0388
+## INFO [2017-07-25 03:55:06] 2017-07-25 03:55:06 - epoch 18, expected cost 0.0385
+## INFO [2017-07-25 03:55:28] 2017-07-25 03:55:28 - epoch 19, expected cost 0.0383
+## INFO [2017-07-25 03:55:51] 2017-07-25 03:55:51 - epoch 20, expected cost 0.0381</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">berlin &lt;-<span class="st"> </span>word_vectors[<span class="st">&quot;paris&quot;</span>, , drop =<span class="st"> </span><span class="ot">FALSE</span>] -<span class="st"> </span>
+<span class="st">  </span>word_vectors[<span class="st">&quot;france&quot;</span>, , drop =<span class="st"> </span><span class="ot">FALSE</span>] +<span class="st"> </span>
+<span class="st">  </span>word_vectors[<span class="st">&quot;germany&quot;</span>, , drop =<span class="st"> </span><span class="ot">FALSE</span>]
+cos_sim =<span class="st"> </span><span class="kw">sim2</span>(<span class="dt">x =</span> word_vectors, <span class="dt">y =</span> berlin, <span class="dt">method =</span> <span class="st">&quot;cosine&quot;</span>, <span class="dt">norm =</span> <span class="st">&quot;l2&quot;</span>)
+<span class="kw">head</span>(<span class="kw">sort</span>(cos_sim[,<span class="dv">1</span>], <span class="dt">decreasing =</span> <span class="ot">TRUE</span>), <span class="dv">5</span>)</code></pre></div>
+<pre><code>##     paris    vienna   germany    munich      rome 
+## 0.7529268 0.7190628 0.7048425 0.6914796 0.6611500</code></pre>
 </div>
 
   <!-- dynamically load mathjax for compatibility with self-contained -->
