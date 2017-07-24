@@ -2301,146 +2301,37 @@ word2vec의 필요성과 역사 등은 김홍배님의 훌륭한 [자료](https:
 
 ## 알고리즘의 종류
 
-빠른 성능으로 개선된 모델인 google의 [word2vec](https://github.com/mukul13/rword2vec)을 시작으로 Stanford에발 발표한 [Glove](https://cran.r-project.org/web/packages/text2vec/vignettes/glove.html), facebook이 발표한 [fastText](https://cran.r-project.org/web/packages/fastTextR/README.html) 등이 있습니다. 우리는 빠른 속도를 인정받고 있는 fastText를 함께 실행해 보겠습니다.
+빠른 성능으로 개선된 모델인 google의 [word2vec](https://github.com/mukul13/rword2vec)을 시작으로 Stanford에발 발표한 [Glove](https://cran.r-project.org/web/packages/text2vec/vignettes/glove.html), facebook이 발표한 [fastText](https://cran.r-project.org/web/packages/fastTextR/README.html) 등이 있습니다. 우리는 실습이 용이한 Glove를 사용해 보겠습니다.
 
-[dbpedia](http://wiki.dbpedia.org/)의 문서를 학습용 데이터로 사용합니다.
 
 ```{r}
-fn <- "dbpedia_csv.tar.gz"
-
-if ( !file.exists(fn) ) {
-    download.file("https://github.com/le-scientifique/torchDatasets/raw/master/dbpedia_csv.tar.gz",
-                  fn)
-    untar(fn)
+library(text2vec)
+text8_file = "./text8"
+if (!file.exists(text8_file)) {
+  download.file("http://mattmahoney.net/dc/text8.zip", "./text8.zip")
+  unzip ("./text8.zip", files = "text8", exdir = "./")
 }
+wiki = readLines(text8_file, n = 1, warn = FALSE)
+
+tokens <- space_tokenizer(wiki)
+
+it = itoken(tokens, progressbar = FALSE)
+vocab <- create_vocabulary(it)
+vocab <- prune_vocabulary(vocab, term_count_min = 5L)
+
+vectorizer <- vocab_vectorizer(vocab)
+
+tcm <- create_tcm(it, vectorizer)
+glove = GlobalVectors$new(word_vectors_size = 50, vocabulary = vocab, x_max = 10)
+word_vectors <- glove$fit_transform(tcm, n_iter = 20)
+
+berlin <- word_vectors["paris", , drop = FALSE] - 
+  word_vectors["france", , drop = FALSE] + 
+  word_vectors["germany", , drop = FALSE]
+cos_sim = sim2(x = word_vectors, y = berlin, method = "cosine", norm = "l2")
+head(sort(cos_sim[,1], decreasing = TRUE), 5)
 ```
 
-```
-
-library("fastTextR")
-
-train <- sample(sprintf("__label__%s", readLines("dbpedia_csv/train.csv", encoding = "UTF-8")))
-head(train)
-
-train <- normalize(train)
-writeLines(train, con = "dbpedia.train")
-
-test <- readLines("dbpedia_csv/test.csv", encoding = "UTF-8")
-test <- normalize(test)
-labels <- gsub("\\D", "", substr(test, 1, 4))
-test <- substr(test, 5, max(nchar(test)))
-head(test)
-head(labels)
-```
-
-```
-cntrl <- ft.control(word_vec_size = 10L, learning_rate = 0.1, max_len_ngram = 2L, 
-                    min_count = 1L, nbuckets = 10000000L, epoch = 5L, nthreads = 20L)
-
-model <- fasttext(input = "dbpedia.train", method = "supervised", control = cntrl)
-save.fasttext(model, "dbpedia")
-```
-
-```
-model <- read.fasttext( "dbpedia.bin" )
-test.pred <- predict(model, test, k = 1L, prob = TRUE)
-str(test.pred)
-test.pred <- predict(model, test, k = 1L, prob = FALSE)
-str(test.pred)
-
-confusion_matrix <- table(labels, gsub("\\D", "", test.pred$label))
-confusion_matrix
-
-sum(diag(confusion_matrix)) / sum(confusion_matrix)
-
-```
-
-```
-fn <- "enwik9.zip"
-if ( !file.exists(fn) ) {
-    url <- "http://mattmahoney.net/dc/enwik9.zip"
-    download.file(url, fn)
-    unzip(fn)
-}
-
-fn <- "rw.zip"
-if ( !file.exists(fn) ) {
-    url <- "http://stanford.edu/~lmthang/morphoNLM/rw.zip"
-    download.file(url, fn)
-    unzip(fn)
-}
-```
-
-```
-clean_wiki <- function(x) {
-    stopifnot(is.character(x))
-    x <- gsub("[[:cntrl:]]", " ", x)
-    x <- gsub("<.*>", "", x, perl = TRUE)  ## remove xml tags
-    x <- gsub("&amp", "&", x, perl = TRUE) ## decode URL encoded chars
-    x <- gsub("&lt", "<", x, perl = TRUE)
-    x <- gsub("&gt", ">", x, perl = TRUE)
-    x <- gsub("<ref[^<]*<\\/ref>", "", x, perl = TRUE) ## remove references <ref...> ... </ref>
-    x <- gsub("<[^>]*>", "", x, perl = TRUE)           ## remove xhtml tags
-    x <- gsub("\\[http:[^] ]*", "[", x, perl = TRUE)   ## remove normal url, preserve visible text
-    x <- gsub("\\|thumb", "", x, perl = TRUE) ## remove images links, preserve caption
-    x <- gsub("\\|left", "", x, perl = TRUE)
-    x <- gsub("\\|right", "", x, perl = TRUE)
-    x <- gsub("\\|\\d+px", "", x, perl = TRUE)
-    x <- gsub("\\[\\[image:[^\\[\\]]*\\|", "", x, perl = TRUE)
-    x <- gsub("\\[\\[category:([^|\\]]*)[^]]*\\]\\]", "[[\\1]]", x, perl = TRUE) ## show categories without markup
-    x <- gsub("\\[\\[[a-z\\-]*:[^\\]]*\\]\\]", "", x, perl = TRUE) ## remove links to other languages
-    x <- gsub("\\[\\[[^\\|\\]]*\\|", "[[", x, perl = TRUE) ## remove wiki url, preserve visible text
-    x <- gsub("\\{\\{[^\\}]*\\}\\}", "", x, perl = TRUE) ## remove {{icons}} and {tables}
-    x <- gsub("\\{[^\\}]*\\}", "", x, perl = TRUE)
-    x <- gsub("\\[", "", x, perl = TRUE) ## remove [ and ]
-    x <- gsub("\\]", "", x, perl = TRUE)
-    x <- gsub("&[^;]*;", " ", x, perl = TRUE) ## remove URL encoded chars
-
-    # convert to lowercase letters and spaces, spell digits
-    x <- tolower(x)
-    x <- gsub("0", " zero ", x, perl = TRUE)
-    x <- gsub("1", " one ", x, perl = TRUE)
-    x <- gsub("2", " two ", x, perl = TRUE)
-    x <- gsub("3", " three ", x, perl = TRUE)
-    x <- gsub("4", " four ", x, perl = TRUE)
-    x <- gsub("5", " five ", x, perl = TRUE)
-    x <- gsub("6", " six ", x, perl = TRUE)
-    x <- gsub("7", " seven ", x, perl = TRUE)
-    x <- gsub("8", " eight ", x, perl = TRUE)
-    x <- gsub("9", " nine ", x, perl = TRUE)
-
-    x <- gsub("[[:punct:]]", " ", x)
-    x
-}
-
-```
-
-```
-library(XML)
-html <- htmlParse("enwik9", encoding = "UTF-8")
-txt <- xpathSApply(html, "//text", xmlValue) 
-txt <- grep("#redirect", txt, value = TRUE, ignore.case = TRUE, invert = TRUE)
-txt <- clean_wiki_pearl(txt)
-txt <- paste(txt, collapse = " ")
-txt <- gsub("\\s+", " ", txt)
-writeLines(txt, con = "fil9"
-
-cntrl <- ft.control(learning_rate = 0.025, word_vec_size = 5, epoch = 1, 
-                    nthreads = 10L)
-
-model <- fasttext("fil9", "skipgram", cntrl)
-model
-
-save.fasttext(model, "fil9_skipgram_model")
-
-model <- read.fasttext("fil9_skipgram_model.bin")
-
-queries <- readLines("rw/rw.txt")
-queries <- unlist(lapply(strsplit(queries, "\\t"), head, 2))
-queries <- tolower(queries)
-
-word_vectors <- get_words(model, queries)
-```
 
 [301]: https://courses.edx.org/courses/course-v1:Microsoft+DAT204x+1T2017/df2f6d24fa78436f999b42375cba9a9e/
 [302]: https://www.datacamp.com/courses/free-introduction-to-r
